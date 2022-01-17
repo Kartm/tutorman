@@ -18,7 +18,7 @@ class HomePageView(TemplateView):
     def get_context_data(self, **kwargs):
         with connection.cursor() as cursor:
             query = """
-                SELECT "Timeslot".*, "Tutoring".*, "Medium".*, "Description".*, "Bill".*
+                SELECT "Timeslot".*, "Tutoring".*, "Medium".*, "Description".*, "Bill".*, "Tutoring".name, "Description".description as description
                 FROM "TutoringParticipant"
                    LEFT JOIN "Timeslot_TutoringParticipant" ON tutoringparticipant.id_tutoring_participant = timeslot_tutoringparticipant.id_tutoring_participant
                    LEFT JOIN "Timeslot" ON timeslot_tutoringparticipant.id_timeslot = timeslot.id_timeslot
@@ -57,8 +57,8 @@ class TutoringsPageView(TemplateView):
             return context
 
 
-class TutoringPreviewPageView(TemplateView):
-    template_name = "tutoring-preview.html"
+class TutoringParticipatePageView(TemplateView):
+    template_name = "tutoring-participate.html"
 
     def get_context_data(self, **kwargs):
         with connection.cursor() as cursor:

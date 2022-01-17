@@ -7,9 +7,43 @@
     </head>
     <body>
       {% block pagecontent %}
-        {% for tutoring in tutorings %}
-            <p>{{ forloop.counter }}. {{ tutoring }}</p>
-        {% endfor %}
+          <h1>Browse available time slots:</h1>
+          <div style="display: flex; flex-direction: row; justify-content: space-between">
+            <div style="flex: 1; border: 1px solid black; margin-right: 32px;">
+                <form>
+                    <div>
+                        <input type="radio" name="remote-enabled" value="1" id="remote-enabled" />
+                        <label for="remote-enabled">Remote teaching</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="remote-enabled" value="1" id="remote-enabled" />
+                        <label for="remote-enabled">Price in range</label>
+                    </div>
+                     <div>
+                        <input type="checkbox" name="subject" value="math" id="remote-enabled" />
+                        <input type="checkbox" name="subject" value="chemistry" id="remote-enabled" />
+                        <label for="remote-enabled">Subject</label>
+                    </div>
+                    <div>
+                        <input type="submit" value="Search"/>
+                    </div>
+
+                </form>
+            </div>
+            <div style="flex: 2; border: 1px solid black; display: flex; flex-direction: column;">
+                <div>
+                    <select style="min-width: 160px;">
+                        <option value="">Sort by: Price</option>
+                    </select>
+                </div>
+                <div>
+                    {% for tutoring in tutorings %}
+                      {% include "components/upcoming_tutoring_card.html" with tutoring=tutoring%}
+                  {% endfor %}
+                </div>
+            </div>
+          </div>
+
       {% endblock %}
     </body>
 </html>
