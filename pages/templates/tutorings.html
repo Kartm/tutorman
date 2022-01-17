@@ -5,6 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-tutorings
+{% for tutoring in tutorings %}
+	<p>{{ forloop.counter }}. {{ tutoring }}</p>
+{% endfor %}
 </body>
 </html>
