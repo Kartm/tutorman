@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import HomePageView
+from .views import HomePageView, TutoringPreviewPageView, TutoringsPageView
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", HomePageView.as_view(), name="home-page-view"),
+    path("tutorings/", TutoringsPageView.as_view(), name="tutorings-page-view"),
+    path("tutorings/<int:id>/", TutoringPreviewPageView.as_view(), name="tutoring-preview-page-view"),
 ]
