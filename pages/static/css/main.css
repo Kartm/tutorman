@@ -1,0 +1,38 @@
+main {
+    margin: 32px auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+}
+
+nav.menu {
+    display: flex;
+    justify-content: flex-start;
+}
+
+nav.menu .item {
+    height: 56px;
+    background-color: grey;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav.menu .item.active {
+    background-color: lightgrey;
+}
+
+nav.menu .item:not(:last-child) {
+    margin-right: 16px;
+}
+
+nav.menu a {
+    text-decoration: none;
+}
+
+.container {
+    background: lightgrey;
+    padding: 16px;
+    box-sizing: border-box;
+}

@@ -1,12 +1,15 @@
+{% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% for tutoring in tutorings %}
-	<p>{{ forloop.counter }}. {{ tutoring }}</p>
-{% endfor %}
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}About Us {% endblock %}</title>
+    </head>
+    <body>
+      {% block pagecontent %}
+        {% for tutoring in tutorings %}
+            <p>{{ forloop.counter }}. {{ tutoring }}</p>
+        {% endfor %}
+      {% endblock %}
+    </body>
 </html>
