@@ -7,16 +7,12 @@
     </head>
     <body>
       {% block pagecontent %}
-        <p>
-        We are a group of Django enthusiasts with the following idiosyncrasies:
-
-        <ol>
-            <li>We only eat bananas on Saturdays.</li>
-            <li>We love making playing football on rainy days.</li>
-        </ol>
-        </p>
-    {#    <a href="{% url 'home' %}">Go Home</a>#}
-    {#    <a href="{% url 'about' %}">About This Site</a>#}
+        <h1>Coming up time slots:</h1>
+          <div style="display: grid; grid-gap: 32px; grid-template-columns: repeat(4, 1fr); grid-auto-flow: row;">
+          {% for tutoring in tutorings %}
+              {% include "components/upcoming_tutoring_card.html" with tutoring=tutoring%}
+          {% endfor %}
+          </div>
       {% endblock %}
     </body>
 </html>

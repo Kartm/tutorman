@@ -1,8 +1,15 @@
 from django.db import connection
-from django.shortcuts import render
 
-# Create your views here.
 from django.views.generic import TemplateView
+
+
+def fetch_dictionarized_rows(cursor, query):
+    cursor.execute(query)
+
+    columns = [col[0] for col in cursor.description]
+    rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    return rows
 
 
 class HomePageView(TemplateView):
@@ -21,14 +28,9 @@ class HomePageView(TemplateView):
                    LEFT JOIN "Bill" ON timeslot_tutoringparticipant.id_bill = bill.id_bill
                 WHERE "TutoringParticipant".id_user = 2;
             """
-            cursor.execute(query)
-
-            columns = [col[0] for col in cursor.description]
-            rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
-            print(rows)
 
             context = super().get_context_data(**kwargs)
-            context['tutorings'] = rows
+            context['tutorings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
             return context
 
 
@@ -49,15 +51,11 @@ class TutoringsPageView(TemplateView):
                   AND "Tutoring".id_subject = 1
                 ORDER BY "Timeslot".takes_place_at;
             """
-            cursor.execute(query)
-
-            columns = [col[0] for col in cursor.description]
-            rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
-            print(rows)
 
             context = super().get_context_data(**kwargs)
-            context['tutorings'] = rows
+            context['tutorings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
             return context
+
 
 class TutoringPreviewPageView(TemplateView):
     template_name = "tutoring-preview.html"
@@ -76,12 +74,7 @@ class TutoringPreviewPageView(TemplateView):
                   AND "Tutoring".id_subject = 1
                 ORDER BY "Timeslot".takes_place_at;
             """
-            cursor.execute(query)
-
-            columns = [col[0] for col in cursor.description]
-            rows = [dict(zip(columns, row)) for row in cursor.fetchall()]
-            print(rows)
 
             context = super().get_context_data(**kwargs)
-            context['tutorings'] = rows
+            context['tutorings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
             return context

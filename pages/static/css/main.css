@@ -33,6 +33,7 @@ nav.menu a {
 
 .container {
     background: lightgrey;
-    padding: 16px;
+    padding: 16px 48px;
     box-sizing: border-box;
+    min-height: 800px;
 }
