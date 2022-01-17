@@ -1,3 +1,4 @@
+{% load extras %}
 <div style="border-radius: 16px; background-color: darkgrey; overflow: hidden;">
     <div style="position: relative; display: flex;">
         <img style="width: 100%; height: 100px; object-fit: cover; object-position: top; filter: brightness(75%);" src="{{ tutoring.banner_url }}">
@@ -8,7 +9,9 @@
             {{ tutoring.description }}
         </div>
         <div style="margin-top: 32px; display: flex; justify-content: flex-end;">
-            in 3 days
+            {% time_until_now tutoring.takes_place_at as n %}
+            in {{ n }} days
+{#            {{ tutoring }}#}
         </div>
     </div>
 
