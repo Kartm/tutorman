@@ -64,7 +64,7 @@
         <div style="flex: 2; display: flex; flex-direction: column;">
             <div style="display: grid; grid-row-gap: 32px;">
                 {% for tutoring in tutorings %}
-                    {% include "components/upcoming_tutoring_card.html" with tutoring=tutoring%}
+                    {% include "components/tutoring_search_result.html" with tutoring=tutoring%}
                 {% endfor %}
             </div>
         </div>

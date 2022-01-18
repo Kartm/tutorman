@@ -64,6 +64,7 @@ class TutoringsPageView(TemplateView):
                          LEFT JOIN timeslot_tutoringparticipant ttp ON timeslot.id_timeslot = ttp.id_timeslot
                          LEFT JOIN "Medium" ON timeslot.id_medium = medium.id_medium
                          LEFT JOIN "Tutoring" ON timeslot.id_tutoring = tutoring.id_tutoring
+                         LEFT JOIN "Description" ON tutoring.id_description = description.id_description
                 WHERE (id_timeslot_tutoring_participant IS NULL OR allow_multiple_participants IS 1)
                   {location_part}
                   AND "Timeslot".takes_place_at BETWEEN DATETIME('2021-11-01 15:22:18') AND DATETIME('2021-11-13 15:22:18')
@@ -85,24 +86,28 @@ class TutoringsPageView(TemplateView):
             return context
 
 
-class TutoringParticipatePageView(TemplateView):
-    template_name = "tutoring-participate.html"
+class TutoringPreviewPageView(TemplateView):
+    template_name = "tutoring-preview.html"
 
     def get_context_data(self, **kwargs):
         with connection.cursor() as cursor:
             query = """
-                SELECT *
-                FROM "Timeslot"
-                         LEFT JOIN timeslot_tutoringparticipant ttp ON timeslot.id_timeslot = ttp.id_timeslot
-                         LEFT JOIN "Medium" ON timeslot.id_medium = medium.id_medium
-                         LEFT JOIN "Tutoring" ON timeslot.id_tutoring = tutoring.id_tutoring
-                WHERE (id_timeslot_tutoring_participant IS NULL OR allow_multiple_participants IS 1)
-                  AND "Medium".is_remote = 1
-                  AND "Timeslot".takes_place_at BETWEEN DATETIME('2021-11-01 15:22:18') AND DATETIME('2021-11-13 15:22:18')
-                  AND "Tutoring".id_subject = 1
-                ORDER BY "Timeslot".takes_place_at;
+                SELECT * FROM "Tutoring"
+                   LEFT JOIN tutoringscope ts ON tutoring.id_tutoring_scope = ts.id_tutoring_scope
+                   LEFT JOIN subject s ON tutoring.id_subject = s.id_subject
+                   LEFT JOIN book b ON tutoring.id_book = b.id_book
+                   LEFT JOIN description d ON tutoring.id_description = d.id_description
+                WHERE id_tutoring = 1;
             """
 
             context = super().get_context_data(**kwargs)
-            context['tutorings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
+            context['tutoring'] = fetch_dictionarized_rows(cursor=cursor, query=query)[0]
+
+            query = """
+                SELECT * FROM "Rating"
+                   LEFT JOIN ratingdispute rd ON rating.id_rating = rd.id_rating
+                WHERE id_tutoring = 1;
+            """
+
+            context['ratings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
             return context

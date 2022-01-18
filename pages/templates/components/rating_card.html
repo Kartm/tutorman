@@ -1,0 +1,26 @@
+{% load extras %}
+<div style="background-color: darkgrey; max-width: 260px; padding: 16px; box-sizing: border-box;">
+    <div>
+        {% with ''|center:10 as range %}
+        {% for _ in range %}
+            {% if forloop.counter0 < rating.rate %}
+                <span style="color: gold;">★</span>
+            {% else %}
+                <span style="color: grey;">☆</span>
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
+    </div>
+    <p>
+        {{ rating.comment }}
+    </p>
+    {% if rating.is_reviewed %}
+        <div style="border-left: 4px solid gray; padding-left: 8px;">
+            <p style="margin-bottom: 4px;">
+                <i style="font-size: 12px;">Response from tutor:</i>
+
+            </p>
+            <p style="font-size: 14px; margin-top: 4px;">{{ rating.reason }}</p>
+        </div>
+    {% endif %}
+</div>

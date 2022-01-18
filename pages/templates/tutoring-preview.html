@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}About Us {% endblock %}</title>
+</head>
+<body>
+{% block pagecontent %}
+    <h1>{{ tutoring.name }}</h1>
+    <h4>{{ tutoring.description }}</h4>
+    <div style="margin-top: 128px;">
+    <h3>Ratings:</h3>
+    {% for rating in ratings %}
+        {% include "components/rating_card.html" with rating=rating%}
+    {% endfor %}
+    </div>
+
+{% endblock %}
+</body>
+</html>

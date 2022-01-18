@@ -1,0 +1,35 @@
+{% load extras %}
+<div style="border-radius: 16px; background-color: darkgrey; overflow: hidden;">
+    <div style="position: relative; display: flex;">
+        <img style="width: 100%; height: 100px; object-fit: cover; object-position: top; filter: brightness(75%);" src="{{ tutoring.banner_url }}">
+        <div style="position: absolute; bottom: 0; left: 0; background-color: #00000060; padding: 16px; color: white; border-top-right-radius: 16px;">{{ tutoring.name }}</div>
+    </div>
+    <div style="padding: 16px; color: white;">
+        <div>
+            {{ tutoring.description }}
+        </div>
+        <div style="margin-top: 32px; display: flex; justify-content: space-between;">
+            <div>
+                {{ tutoring.takes_place_at }}
+            </div>
+            <div>
+                {% if tutoring.is_remote == 1 %}
+                    remote
+                {% else %}
+                    in-person
+                {% endif %}
+            </div>
+            <div>
+                {{ tutoring.price_for_timeslot }} zł
+                /
+                {{ tutoring.timeslot_mins }}
+                min
+            </div>
+            <div>
+                {% url 'tutoring-preview-page-view' tutoring_id=tutoring.id_tutoring as tutoring_preview_page_url %}
+                <a href="{{ tutoring_preview_page_url }}">details</a>
+            </div>
+        </div>
+    </div>
+
+</div>
