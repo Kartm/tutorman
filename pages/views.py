@@ -38,22 +38,50 @@ class TutoringsPageView(TemplateView):
     template_name = "tutorings.html"
 
     def get_context_data(self, **kwargs):
+        sort_param = self.request.GET.get('sort', None)
+
+        sort_part = {
+            'price-asc': 'ORDER BY "Tutoring".price_for_timeslot ASC',
+            'price-desc': 'ORDER BY "Tutoring".price_for_timeslot DESC'
+        }.get(sort_param, 'ORDER BY "Timeslot".takes_place_at')
+
+        location_param = self.request.GET.get('location', None)
+
+        location_part = {
+            'remote': 'AND "Medium".is_remote = 1',
+            'onsite': 'AND "Medium".is_remote = 0',
+        }.get(location_param, '')
+
+        subject_param = self.request.GET.get('subject', None)
+        subject_part = f'AND "Tutoring".id_subject = {int(subject_param)}' \
+            if subject_param and subject_param.isdigit() \
+            else ''
+
         with connection.cursor() as cursor:
-            query = """
-                SELECT *
+            query = f"""
+                SELECT *, "Tutoring".price_for_timeslot
                 FROM "Timeslot"
                          LEFT JOIN timeslot_tutoringparticipant ttp ON timeslot.id_timeslot = ttp.id_timeslot
                          LEFT JOIN "Medium" ON timeslot.id_medium = medium.id_medium
                          LEFT JOIN "Tutoring" ON timeslot.id_tutoring = tutoring.id_tutoring
                 WHERE (id_timeslot_tutoring_participant IS NULL OR allow_multiple_participants IS 1)
-                  AND "Medium".is_remote = 1
+                  {location_part}
                   AND "Timeslot".takes_place_at BETWEEN DATETIME('2021-11-01 15:22:18') AND DATETIME('2021-11-13 15:22:18')
-                  AND "Tutoring".id_subject = 1
-                ORDER BY "Timeslot".takes_place_at;
+                  {subject_part}
+                {sort_part};
             """
 
             context = super().get_context_data(**kwargs)
+
             context['tutorings'] = fetch_dictionarized_rows(cursor=cursor, query=query)
+
+            query = """
+                SELECT *
+                FROM "Subject";
+            """
+
+            context['subjects'] = fetch_dictionarized_rows(cursor=cursor, query=query)
+
             return context
 
 

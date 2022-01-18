@@ -1,49 +1,75 @@
 {% extends 'base.html' %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}About Us {% endblock %}</title>
-    </head>
-    <body>
-      {% block pagecontent %}
-          <h1>Browse available time slots:</h1>
-          <div style="display: flex; flex-direction: row; justify-content: space-between">
-            <div style="flex: 1; border: 1px solid black; margin-right: 32px;">
-                <form>
-                    <div>
-                        <input type="radio" name="remote-enabled" value="1" id="remote-enabled" />
-                        <label for="remote-enabled">Remote teaching</label>
-                    </div>
-                    <div>
-                        <input type="radio" name="remote-enabled" value="1" id="remote-enabled" />
-                        <label for="remote-enabled">Price in range</label>
-                    </div>
-                     <div>
-                        <input type="checkbox" name="subject" value="math" id="remote-enabled" />
-                        <input type="checkbox" name="subject" value="chemistry" id="remote-enabled" />
-                        <label for="remote-enabled">Subject</label>
-                    </div>
-                    <div>
-                        <input type="submit" value="Search"/>
-                    </div>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}About Us {% endblock %}</title>
+</head>
+<body>
+{% block pagecontent %}
+    <h1>Browse available time slots:</h1>
+    <div style="display: flex; flex-direction: row; justify-content: space-between">
+        <div style="flex: 1; margin-right: 32px;">
+            <form style="padding: 16px; box-sizing: border-box;">
+                <section>
+                    <p>
+                      <select id="sort" name="sort">
+                        <option value="visa" disabled selected>Sort by:</option>
+                        <option value="price-asc">Price ascending</option>
+                        <option value="price-desc">Price descending</option>
+                      </select>
+                    </p>
+                </section>
 
-                </form>
-            </div>
-            <div style="flex: 2; border: 1px solid black; display: flex; flex-direction: column;">
-                <div>
-                    <select style="min-width: 160px;">
-                        <option value="">Sort by: Price</option>
-                    </select>
-                </div>
-                <div>
-                    {% for tutoring in tutorings %}
-                      {% include "components/upcoming_tutoring_card.html" with tutoring=tutoring%}
-                  {% endfor %}
-                </div>
-            </div>
-          </div>
+                <section>
+                    <fieldset>
+                        <legend>Location</legend>
+                        <ul>
+                            <li>
+                                <label for="location-remote">
+                                    <input type="radio" id="location-remote" name="location" value="remote" >
+                                    Remote
+                                </label>
+                            </li>
+                            <li>
+                                <label for="location-onsite">
+                                    <input type="radio" id="location-onsite" name="location" value="onsite">
+                                    On-site
+                                </label>
+                            </li>
+                        </ul>
+                    </fieldset>
 
-      {% endblock %}
-    </body>
+                     <fieldset>
+                        <legend>Subject</legend>
+                        <ul>
+                            {% for subject in subjects %}
+                            <li>
+                                <label for="subject-{{ subject.id_subject }}">
+                                    <input type="radio" id="subject-{{ subject.id_subject }}" name="subject" value="{{ subject.id_subject }}"/>
+                                    {{ subject.name }}
+                                </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </fieldset>
+                </section>
+
+                <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+                    <input type="submit" value="Search"/>
+                </div>
+
+            </form>
+        </div>
+        <div style="flex: 2; display: flex; flex-direction: column;">
+            <div style="display: grid; grid-row-gap: 32px;">
+                {% for tutoring in tutorings %}
+                    {% include "components/upcoming_tutoring_card.html" with tutoring=tutoring%}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+</body>
 </html>
