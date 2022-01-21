@@ -1,5 +1,6 @@
 # tutorman
 Tutoring Management System project for Database Engineering university class.
+Built in **Django**.
 
 ## How to run
 * `python3 manage.py runserver`
